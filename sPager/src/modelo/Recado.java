@@ -3,6 +3,8 @@
  */
 package modelo;
 
+import controle.AcessoException;
+import controle.ManutencaoException;
 import java.io.Serializable;
 
 /**
@@ -17,51 +19,70 @@ public class Recado implements Serializable{
 
     public Recado() {}
 
-    public Recado(Pessoa remetente, Pessoa destinatario, String mensagem) {
-        this.codigo = 0;
-        this.remetente = remetente;
-        this.destinatario = destinatario;
-        this.mensagem = mensagem;
-        this.visualizacao = false;
+    public Recado(Pessoa remetente, Pessoa destinatario, String mensagem) throws ManutencaoException, AcessoException {
+        setCodigo();
+        setRemetente(remetente);
+        setDestinatario(destinatario);
+        setMensagem(mensagem);
+        setVisualizacao();
     }
     
     public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
     public Pessoa getRemetente() {
         return remetente;
-    }
-
-    public void setRemetente(Pessoa remetente) {
-        this.remetente = remetente;
     }
 
     public Pessoa getDestinatario() {
         return destinatario;
     }
 
-    public void setDestinatario(Pessoa destinatario) {
-        this.destinatario = destinatario;
-    }
-
     public String getMensagem() {
         return mensagem;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
     }
 
     public boolean isVisualizacao() {
         return visualizacao;
     }
 
-    public void setVisualizacao(boolean visualizacao) {
+    private void setCodigo() {
+        this.codigo = 0;
+    }
+    
+    protected void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+    
+    private void setRemetente(Pessoa remetente) throws ManutencaoException, AcessoException {
+        if(!DAOPessoa.isUsuario(remetente))
+            throw new ManutencaoException("Remetente inexistente");
+        else    
+            this.remetente = remetente;
+    }
+    
+    private void setDestinatario(Pessoa destinatario) throws ManutencaoException, AcessoException {
+        if(!DAOPessoa.isUsuario(destinatario))
+            throw new ManutencaoException("Destinatário inexistente!");
+        else if(remetente.equals(destinatario))
+            throw new ManutencaoException("Remetente e destinatário idênticos!");
+        else
+            this.destinatario = destinatario;
+    }
+    
+    private void setMensagem(String mensagem) throws ManutencaoException {
+        if(mensagem.equals(""))
+            throw new ManutencaoException("Campo nao informado!");
+        else 
+            this.mensagem = mensagem;
+    }
+    
+    private void setVisualizacao() {
+        this.visualizacao = false;
+    }
+            
+    private void setVisualizacao(boolean visualizacao) {
         this.visualizacao = visualizacao;
     }
 

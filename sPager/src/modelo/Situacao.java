@@ -3,6 +3,7 @@
  */
 package modelo;
 
+import controle.ManutencaoException;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,22 +21,25 @@ public class Situacao implements Serializable{
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
     public String getAtividade() {
         return atividade;
-    }
-
-    public void setAtividade(String atividade) {
-        this.atividade = atividade;
     }
 
     public boolean isDisponibilidade() {
         return disponibilidade;
     }
+    
+    void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
 
+    public void setAtividade(String atividade) throws ManutencaoException {
+        if(atividade.equals("")){
+            throw new ManutencaoException("Campo não informado!");}
+        else
+            this.atividade = atividade;
+    }
+    
     public void setDisponibilidade(boolean disponibilidade) {
         this.disponibilidade = disponibilidade;
     }

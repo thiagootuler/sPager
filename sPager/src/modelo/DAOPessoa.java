@@ -3,6 +3,8 @@
  */
 package modelo;
 
+import controle.AcessoException;
+import controle.ManutencaoException;
 import java.util.List;
 
 /**
@@ -12,25 +14,25 @@ public class DAOPessoa {
 
     public DAOPessoa() {}
     
-    public List<Pessoa> getLista() {
-        return Dados.pessoas;
+    public static List<Pessoa> getLista() throws AcessoException {
+        if(Dados.pessoas!=null)
+            return Dados.pessoas;
+        else
+            throw new AcessoException("Sem usuários cadastrados!");
     }
     
-    public static boolean isUsuario(Pessoa pessoa_p) {
-        if(Dados.pessoas!=null){
-            for(Pessoa pessoa_e: Dados.pessoas){
-                if(pessoa_e.equals(pessoa_p)){
-                    return true;
-                }
-            }
-        }
+    public static boolean isUsuario(Pessoa pessoa_p) throws AcessoException {
+        for(Pessoa pessoa_e: DAOPessoa.getLista())
+            if(pessoa_e.equals(pessoa_p))
+                return true;
         return false;
     }
     
-    public static boolean salvar(Pessoa pessoa) {
+    public static void cadastrar(Pessoa pessoa) throws AcessoException, ManutencaoException {
         if(!isUsuario(pessoa))
             Dados.pessoas.add(pessoa);
-        return true;
+        else
+            throw new ManutencaoException("Usuário já cadastrado!");
     }
     
     public boolean remover(Pessoa pessoa) {
