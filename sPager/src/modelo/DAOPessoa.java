@@ -21,11 +21,16 @@ public class DAOPessoa {
             throw new AcessoException("Sem usuários cadastrados!");
     }
     
-    public static boolean isUsuario(Pessoa pessoa_p) throws AcessoException {
-        for(Pessoa pessoa_e: DAOPessoa.getLista())
-            if(pessoa_e.equals(pessoa_p))
-                return true;
-        return false;
+    public static Pessoa procurar(String usuario) throws AcessoException {
+        //return Dados.pessoas.indexOf(pessoa);
+        for(Pessoa pessoa: DAOPessoa.getLista())
+            if(pessoa.getUsuario().equals(usuario))
+                return pessoa;
+        return null;
+    }
+    
+    public static boolean isUsuario(Pessoa pessoa) throws AcessoException {
+        return procurar(pessoa.getUsuario()) != null;
     }
     
     public static void cadastrar(Pessoa pessoa) throws AcessoException, ManutencaoException {
@@ -35,8 +40,24 @@ public class DAOPessoa {
             throw new ManutencaoException("Usuário já cadastrado!");
     }
     
-    public boolean remover(Pessoa pessoa) {
-        Dados.pessoas.remove(pessoa);
-        return true;
+    public static void alterar(String nome, String email, String usuario, String senha) throws ManutencaoException, AcessoException{
+        Pessoa pessoa = procurar(usuario);
+        int index = Dados.pessoas.indexOf(pessoa);
+        if(index != -1){
+            pessoa.setNome(nome);
+            pessoa.setEmail(email);
+            pessoa.setSenha(senha);
+            Dados.pessoas.set(index, pessoa);
+        }else{
+            throw new ManutencaoException("Usuário não cadastrado");
+        }
+    }
+    
+    public static void remover(Pessoa pessoa) throws ManutencaoException {
+        int index = Dados.pessoas.indexOf(pessoa);
+        if(index != -1)
+            Dados.pessoas.remove(pessoa);
+        else
+            throw new ManutencaoException("Usuário ainda não cadastrado");
     }
 }

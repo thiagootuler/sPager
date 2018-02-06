@@ -50,16 +50,16 @@ public final class Pessoa implements Serializable{
         return situacao;
     }
     
-    private void setNome(String nome) throws ManutencaoException {
+    protected void setNome(String nome) throws ManutencaoException {
         if(nome.equals(""))
-            throw new ManutencaoException("Campo não informado!");
+            throw new ManutencaoException("Nome não informado!");
         else
             this.nome = nome;
     }
     
-    private void setEmail(String email) throws ManutencaoException {
+    protected void setEmail(String email) throws ManutencaoException {
         if(email.equals(""))
-            throw new ManutencaoException("Campo não informado!");
+            throw new ManutencaoException("E-mail não informado!");
         else if(!isEmailValid(email))
             throw new ManutencaoException("Email inválido!");
         else
@@ -68,16 +68,16 @@ public final class Pessoa implements Serializable{
 
     private void setUsuario(String usuario) throws ManutencaoException, AcessoException {
         if(usuario.equals(""))
-            throw new ManutencaoException("Campo não informado!");
+            throw new ManutencaoException("Usuario não informado!");
         else if(DAOPessoa.isUsuario(this))
             throw new ManutencaoException("Usuario ja cadastrado!");
         else
             this.usuario = usuario;
     }
 
-    private void setSenha(String senha) throws ManutencaoException {
+    protected void setSenha(String senha) throws ManutencaoException {
         if(senha.equals(""))
-            throw new ManutencaoException("Campo não informado!");
+            throw new ManutencaoException("Senha não informado!");
         else
             this.senha = senha;
     }

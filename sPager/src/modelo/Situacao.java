@@ -29,18 +29,18 @@ public class Situacao implements Serializable{
         return disponibilidade;
     }
     
-    void setPessoa(Pessoa pessoa) {
+    protected void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
 
-    public void setAtividade(String atividade) throws ManutencaoException {
+    protected void setAtividade(String atividade) throws ManutencaoException {
         if(atividade.equals("")){
             throw new ManutencaoException("Campo não informado!");}
         else
             this.atividade = atividade;
     }
     
-    public void setDisponibilidade(boolean disponibilidade) {
+    protected void setDisponibilidade(boolean disponibilidade) {
         this.disponibilidade = disponibilidade;
     }
 
